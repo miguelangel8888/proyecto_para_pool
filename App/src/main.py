@@ -24,6 +24,13 @@ class BillarApp(tk.Tk):
         
         self.label_titulo.grid(row=0, column=0, sticky="w")
 
+        #titulo Precio
+
+        self.label_titulo_precio = tk.Label(self.mi_frame,text="Precio",font=("Arial", 24, "bold"),fg="white",
+            bg="#181817")
+        
+        self.label_titulo_precio.grid(row=0, column=5)
+
         # --- Label Mesa 1 ---
         self.label_mesa1 = tk.Label(
             self.mi_frame,
@@ -82,6 +89,11 @@ class BillarApp(tk.Tk):
         
         self.label_tiempo.grid(row=1, column=4)
 
+        # label precio
+        self.label_precio = tk.Label(self.mi_frame,text="0.0 BS.",font=("Arial", 20, "bold"),fg="white",
+            bg="#181817")
+        self.label_precio.grid(row=1, column=5)
+
         # --- Ajustar columnas para que no se compriman ---
         for c in range(3):
             self.mi_frame.grid_columnconfigure(c, weight=1)
@@ -90,9 +102,12 @@ class BillarApp(tk.Tk):
         if self.contando:
             self.segundos+=1
             horas = self.minutos//60
-            minutos = self.segundos//60 # manejar precio dividido 5
+            minutos = self.segundos//60 
             segundos = self.segundos%60
+            precio = round(minutos*0.2,2)
             self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
+            self.label_precio.config(text=f"{precio} BS.")
+
             self.after(1000,self.actualizar_tiempo)  
 
 
@@ -100,13 +115,25 @@ class BillarApp(tk.Tk):
     def boton_iniciar(self):
         if not self.contando:
             self.contando = True
+            self.boton_stop.config(text="Stop")
+            self.boton_inicio.config(text="Inicio")
             self.actualizar_tiempo()
             
 
 
     def boton_parar(self):
-        self.contando = False
-        
+        if self.contando: 
+            self.contando= False
+            self.boton_stop.config(text="Borrar")
+            self.boton_inicio.config(text="Seguir")
+        else:
+            self.boton_stop.config(text="Stop")
+            self.boton_inicio.config(text="Inicio")
+            self.minutos=0
+            self.segundos=0
+            self.precio=0
+            self.label_tiempo.config(text="00:00:00")
+            self.label_precio.config(text="0.0 BS.")
         
         
     def boton_pausar(self):
