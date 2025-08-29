@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import simpledialog
 #from src.utils.cronometro import actualizar_tiempo
 
 class BillarApp(tk.Tk):
@@ -11,7 +12,9 @@ class BillarApp(tk.Tk):
         self.minutos=0
         self.segundos=0
         self.contando=False
+        self.tiempo_habilitado=False
         self.precio=0
+        self.tiempo_limite=0
 
         # --- Frame principal ---
         self.mi_frame = tk.Frame(self, bg="#181817", padx=20, pady=20)
@@ -61,7 +64,7 @@ class BillarApp(tk.Tk):
         self.boton_pausa = tk.Button(
             self.mi_frame,
             command=self.boton_pausar,
-            text="Pausa",
+            text="Tiempo",
             font=("Arial", 14, "bold"),
             width=8,
             height=1,
@@ -105,8 +108,13 @@ class BillarApp(tk.Tk):
             minutos = self.segundos//60 
             segundos = self.segundos%60
             precio = round(minutos*0.2,2)
-            self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
-            self.label_precio.config(text=f"{precio} BS.")
+            if self.tiempo_limite <= minutos and self.tiempo_habilitado==True:
+                self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
+                self.label_precio.config(text=f"{precio} BS.")
+                self.label_tiempo.config(fg="red")
+            else:
+                self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
+                self.label_precio.config(text=f"{precio} BS.")    
 
             self.after(1000,self.actualizar_tiempo)  
 
@@ -132,14 +140,19 @@ class BillarApp(tk.Tk):
             self.minutos=0
             self.segundos=0
             self.precio=0
+            self.tiempo_limite=0
+            self.tiempo_habilitado=False
+            self.label_tiempo.config(fg="white")
             self.label_tiempo.config(text="00:00:00")
             self.label_precio.config(text="0.0 BS.")
         
         
     def boton_pausar(self):
-        if not self.contando:
-            self.contando = True
-            self.actualizar_tiempo()
+        
+        minutos = simpledialog.askinteger("Tiempo límite", "Ingrese el tiempo en minutos:", minvalue=1)
+        if minutos:
+            self.tiempo_limite = minutos
+            self.tiempo_habilitado=True
 
 if __name__ == "__main__":
     app = BillarApp()
