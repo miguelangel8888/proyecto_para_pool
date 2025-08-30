@@ -9,8 +9,8 @@ class BillarApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("GHOSTPOOL")
-        self.geometry("900x500")
-        #self.resizable(False, False)
+        self.geometry("1000x600")
+        self.resizable(False, False)
         self.configure(bg="#181817")
         self.minutos=0
         self.segundos=0
@@ -21,6 +21,7 @@ class BillarApp(tk.Tk):
         self.tono=False
         pygame.mixer.init()
         pygame.mixer.music.load("Alarma.mp3")
+        self.extras_mesa1 = []
 
 
         # --- Frame principal ---
@@ -30,7 +31,7 @@ class BillarApp(tk.Tk):
 
         #crear fondo
         imagen = Image.open("mi_imagen.jpg")
-        imagen = imagen.resize((900, 500))  # ajustar al tamaño del frame
+        imagen = imagen.resize((1000, 600))  # ajustar al tamaño del frame
         self.foto_fondo = ImageTk.PhotoImage(imagen)
 
         self.label_fondo = tk.Label(self.mi_frame, image=self.foto_fondo)
@@ -74,7 +75,7 @@ class BillarApp(tk.Tk):
             fg="white",
             
         )
-        self.boton_inicio.grid(row=1, column=1, padx=10)  # espacio a la derecha del label
+        self.boton_inicio.grid(row=1, column=1, padx=2)  # espacio a la derecha del label
 
         # --- Botón Pausar ---
         self.boton_pausa = tk.Button(
@@ -112,6 +113,14 @@ class BillarApp(tk.Tk):
         self.label_precio = tk.Label(self.mi_frame,text="0.0 BS.",font=("Arial", 20, "bold"),fg="white",
             bg="#181817")
         self.label_precio.grid(row=1, column=5)
+
+        # Boton agregar extra
+
+        self.boton_agregar_extra = tk.Button(self.mi_frame, text="Agregar",font=("Arial", 14, "bold"), command=self.agregar_extra )
+        self.boton_agregar_extra.grid(row=1, column=6)
+
+        self.lista_extras = tk.Listbox(self.mi_frame, width=15, height=3)
+        self.lista_extras.grid(row=1,column=7)
 
         # --- Ajustar columnas para que no se compriman ---
         for c in range(3):
@@ -165,7 +174,9 @@ class BillarApp(tk.Tk):
             self.label_tiempo.config(fg="white")
             self.label_tiempo.config(text="00:00:00")
             self.label_precio.config(text="0.0 BS.")
-        
+            self.lista_extras.delete(0, tk.END)
+            self.extras_mesa1.clear()
+
         
     def boton_pausar(self):
         
@@ -173,6 +184,12 @@ class BillarApp(tk.Tk):
         if minutos:
             self.tiempo_limite = minutos
             self.tiempo_habilitado=True
+
+    def agregar_extra(self):
+        extra = simpledialog.askstring("Agregar Extra", "Descripción y monto (ej: Refresco 15):")
+        if extra:
+            self.extras_mesa1.append(extra)
+            self.lista_extras.insert(tk.END, extra)
 
 if __name__ == "__main__":
     app = BillarApp()
