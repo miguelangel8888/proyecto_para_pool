@@ -1,11 +1,14 @@
 import tkinter as tk
+#from tkinter import ttk
 from tkinter import simpledialog
+import pygame
+from PIL import Image, ImageTk
 #from src.utils.cronometro import actualizar_tiempo
 
 class BillarApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("GHOSTPOOL 🎱")
+        self.title("GHOSTPOOL")
         self.geometry("900x500")
         #self.resizable(False, False)
         self.configure(bg="#181817")
@@ -15,10 +18,23 @@ class BillarApp(tk.Tk):
         self.tiempo_habilitado=False
         self.precio=0
         self.tiempo_limite=0
+        self.tono=False
+        pygame.mixer.init()
+        pygame.mixer.music.load("Alarma.mp3")
+
 
         # --- Frame principal ---
         self.mi_frame = tk.Frame(self, bg="#181817", padx=20, pady=20)
-        self.mi_frame.pack(fill="x")
+        #self.mi_frame.pack(fill="x")
+        self.mi_frame.pack(fill="both", expand=True)
+
+        #crear fondo
+        imagen = Image.open("mi_imagen.jpg")
+        imagen = imagen.resize((900, 500))  # ajustar al tamaño del frame
+        self.foto_fondo = ImageTk.PhotoImage(imagen)
+
+        self.label_fondo = tk.Label(self.mi_frame, image=self.foto_fondo)
+        self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
 
         #titulo
 
@@ -112,6 +128,9 @@ class BillarApp(tk.Tk):
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
                 self.label_precio.config(text=f"{precio} BS.")
                 self.label_tiempo.config(fg="red")
+                if not self.tono:
+                    self.tono=True
+                    pygame.mixer.music.play()
             else:
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
                 self.label_precio.config(text=f"{precio} BS.")    
@@ -141,6 +160,7 @@ class BillarApp(tk.Tk):
             self.segundos=0
             self.precio=0
             self.tiempo_limite=0
+            self.tono=False
             self.tiempo_habilitado=False
             self.label_tiempo.config(fg="white")
             self.label_tiempo.config(text="00:00:00")
