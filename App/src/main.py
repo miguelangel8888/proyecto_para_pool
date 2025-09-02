@@ -25,12 +25,12 @@ class BillarApp(tk.Tk):
 
 
         # --- Frame principal ---
-        self.mi_frame = tk.Frame(self, bg="#181817", padx=20, pady=20)
+        self.mi_frame = tk.Frame(self, bg="#000000", padx=20, pady=20)
         #self.mi_frame.pack(fill="x")
         self.mi_frame.pack(fill="both", expand=True)
 
         #crear fondo
-        imagen = Image.open("mi_imagen.jpg")
+        imagen = Image.open("GhostPoolOficial.png")
         imagen = imagen.resize((1000, 600))  # ajustar al tamaño del frame
         self.foto_fondo = ImageTk.PhotoImage(imagen)
 
@@ -119,7 +119,7 @@ class BillarApp(tk.Tk):
         self.boton_agregar_extra = tk.Button(self.mi_frame, text="Agregar",font=("Arial", 14, "bold"), command=self.agregar_extra )
         self.boton_agregar_extra.grid(row=1, column=6)
 
-        self.lista_extras = tk.Listbox(self.mi_frame, width=15, height=3)
+        self.lista_extras = tk.Listbox(self.mi_frame, width=15, height=3, font=("Arial", 14))
         self.lista_extras.grid(row=1,column=7)
 
         # --- Ajustar columnas para que no se compriman ---
