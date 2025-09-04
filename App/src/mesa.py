@@ -1,18 +1,11 @@
 import tkinter as tk
-#from tkinter import ttk
 from tkinter import simpledialog
 import pygame
-from PIL import Image, ImageTk
-from mesa import mesa
-#from src.utils.cronometro import actualizar_tiempo
 
-class BillarApp(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("GHOSTPOOL")
-        self.geometry("1000x600")
-        self.resizable(False, False)
-        self.configure(bg="#181817")
+
+class mesa:
+    def __init__(self, frame, numero):
+        self.numero=numero
         self.minutos=0
         self.segundos=0
         self.contando=False
@@ -23,52 +16,21 @@ class BillarApp(tk.Tk):
         pygame.mixer.init()
         pygame.mixer.music.load("Alarma.mp3")
         self.extras_mesa1 = []
-        self.mesas = []
-        self.contador_mesas = 0
 
+        self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10)
 
-        # --- Frame principal ---
-        self.mi_frame = tk.Frame(self, bg="#000000", padx=20, pady=20)
-        #self.mi_frame.pack(fill="x")
-        self.mi_frame.pack(fill="both", expand=True)
-
-        #crear fondo
-        imagen = Image.open("GhostPoolOficial.png")
-        imagen = imagen.resize((1000, 600))  # ajustar al tamaño del frame
-        self.foto_fondo = ImageTk.PhotoImage(imagen)
-
-        self.label_fondo = tk.Label(self.mi_frame, image=self.foto_fondo)
-        self.label_fondo.place(x=0, y=0, relwidth=1, relheight=1)
-
-        #titulo
-
-        self.label_titulo = tk.Label(self.mi_frame,text="GhostPool",font=("Arial", 24, "bold"),fg="white",
-            bg="#181817")
-        
-        self.label_titulo.grid(row=0, column=0, sticky="w")
-
-        #titulo Precio
-
-        self.label_titulo_precio = tk.Label(self.mi_frame,text="Precio",font=("Arial", 24, "bold"),fg="white",
-            bg="#181817")
-        
-        self.label_titulo_precio.grid(row=0, column=5)
-
-        # --- Label Mesa 1 ---
         self.label_mesa1 = tk.Label(
-            self.mi_frame,
-            text="Mesa 1",
-            font=("Arial", 20, "bold"),
+            self.frame,
+            text=f"Mesa {self.numero}",
+            font=("Arial", 14, "bold"),
             fg="white",
             bg="#181817"
         )
-        self.label_mesa1.grid(row=1, column=0, sticky="w")  # izquierda
 
-        
+        self.label_mesa1.grid(row=0, column=0, sticky="w") 
 
-        # --- Botón Inicio ---
         self.boton_inicio = tk.Button(
-            self.mi_frame,
+            self.frame,
             command=self.boton_iniciar,
             text="Inicio",
             font=("Arial", 14, "bold"),
@@ -78,11 +40,11 @@ class BillarApp(tk.Tk):
             fg="white",
             
         )
-        self.boton_inicio.grid(row=1, column=1, padx=2)  # espacio a la derecha del label
+        self.boton_inicio.grid(row=0, column=1, padx=2) 
 
         # --- Botón Pausar ---
         self.boton_pausa = tk.Button(
-            self.mi_frame,
+            self.frame,
             command=self.boton_pausar,
             text="Tiempo",
             font=("Arial", 14, "bold"),
@@ -92,11 +54,11 @@ class BillarApp(tk.Tk):
             fg="white",
             
         )
-        self.boton_pausa.grid(row=1, column=2, padx=5)
+        self.boton_pausa.grid(row=0, column=2, padx=5)
 
         # --- Botón Stop ---
         self.boton_stop = tk.Button(
-            self.mi_frame,
+            self.frame,
             text="Stop",
             font=("Arial", 14, "bold"),
             width=8,
@@ -105,32 +67,26 @@ class BillarApp(tk.Tk):
             fg="white",
             command=self.boton_parar
         )
-        self.boton_stop.grid(row=1, column=3, padx=10)  # espacio a la derecha del botón Inicio
+        self.boton_stop.grid(row=0, column=3, padx=5)  # espacio a la derecha del botón Inicio
         # label tiempo
-        self.label_tiempo = tk.Label(self.mi_frame,text="00:00:00",font=("Arial", 20, "bold"),fg="white",
+        self.label_tiempo = tk.Label(self.frame,text="00:00:00",font=("Arial", 20, "bold"),fg="white",
             bg="#181817")
         
-        self.label_tiempo.grid(row=1, column=4)
+        self.label_tiempo.grid(row=0, column=4)
 
         # label precio
-        self.label_precio = tk.Label(self.mi_frame,text="0.0 BS.",font=("Arial", 20, "bold"),fg="white",
+        self.label_precio = tk.Label(self.frame,text="0.0 BS.",font=("Arial", 20, "bold"),fg="white",
             bg="#181817")
-        self.label_precio.grid(row=1, column=5)
+        self.label_precio.grid(row=0, column=5)
 
         # Boton agregar extra
 
-        self.boton_agregar_extra = tk.Button(self.mi_frame, text="Agregar",font=("Arial", 14, "bold"), command=self.agregar_extra )
-        self.boton_agregar_extra.grid(row=1, column=6)
+        self.boton_agregar_extra = tk.Button(self.frame, text="Agregar",font=("Arial", 14, "bold"), command=self.agregar_extra )
+        self.boton_agregar_extra.grid(row=0, column=6)
 
-        self.lista_extras = tk.Listbox(self.mi_frame, width=15, height=3, font=("Arial", 14))
-        self.lista_extras.grid(row=1,column=7)
+        self.lista_extras = tk.Listbox(self.frame, width=15, height=3, font=("Arial", 14))
+        self.lista_extras.grid(row=0,column=7)
 
-        self.boton_nueva = tk.Button(self.mi_frame, text="Nueva Mesa", command=self.agregar_mesa)
-        self.boton_nueva.grid(row=2, column=0)
-
-        # --- Ajustar columnas para que no se compriman ---
-        for c in range(3):
-            self.mi_frame.grid_columnconfigure(c, weight=1)
 
     def actualizar_tiempo(self):
         if self.contando:
@@ -150,7 +106,7 @@ class BillarApp(tk.Tk):
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
                 self.label_precio.config(text=f"{precio} BS.")    
 
-            self.after(1000,self.actualizar_tiempo)  
+            self.frame.after(1000,self.actualizar_tiempo)  
 
 
     #funcion inicio
@@ -196,14 +152,3 @@ class BillarApp(tk.Tk):
         if extra:
             self.extras_mesa1.append(extra)
             self.lista_extras.insert(tk.END, extra)
-
-    def agregar_mesa(self):
-        self.contador_mesas += 1
-        nueva = mesa(self.mi_frame, self.contador_mesas)
-        #fila_actual = len(self.mesas)
-        nueva.frame.grid(row=4, column=0, sticky="ew", padx=20, pady=5)
-        self.mesas.append(nueva)
-
-if __name__ == "__main__":
-    app = BillarApp()
-    app.mainloop()
