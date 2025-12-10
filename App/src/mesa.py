@@ -17,8 +17,9 @@ class mesa:
         pygame.mixer.music.load("Alarma.mp3")
         self.extras_mesa1 = []
 
-        self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10)
-
+        self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10, bg="#181817")
+        self.frame.config(width=950, height=100)
+        self.frame.grid_propagate(False)
         self.label_mesa1 = tk.Label(
             self.frame,
             text=f"Mesa {self.numero}",
@@ -32,7 +33,7 @@ class mesa:
         self.boton_inicio = tk.Button(
             self.frame,
             command=self.boton_iniciar,
-            text="Inicio",
+            text="Inicio1",
             font=("Arial", 14, "bold"),
             width=8,
             height=1,

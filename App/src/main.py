@@ -1,8 +1,8 @@
 import tkinter as tk
 #from tkinter import ttk
 from tkinter import simpledialog
-import pygame
-from PIL import Image, ImageTk
+import pygame # type: ignore
+from PIL import Image, ImageTk # type: ignore
 from mesa import mesa
 #from src.utils.cronometro import actualizar_tiempo
 
@@ -129,8 +129,8 @@ class BillarApp(tk.Tk):
         self.boton_nueva.grid(row=2, column=0)
 
         # --- Ajustar columnas para que no se compriman ---
-        for c in range(3):
-            self.mi_frame.grid_columnconfigure(c, weight=1)
+        ##for c in range(3):
+        ##    self.mi_frame.grid_columnconfigure(c, weight=1)
 
     def actualizar_tiempo(self):
         if self.contando:
@@ -198,10 +198,10 @@ class BillarApp(tk.Tk):
             self.lista_extras.insert(tk.END, extra)
 
     def agregar_mesa(self):
-        self.contador_mesas += 1
+        self.contador_mesas = simpledialog.askstring("Nueva Mesa", "Ingrese el nombre o número de la mesa:")
         nueva = mesa(self.mi_frame, self.contador_mesas)
-        #fila_actual = len(self.mesas)
-        nueva.frame.grid(row=4, column=0, sticky="ew", padx=20, pady=5)
+        fila_actual = len(self.mesas) + 4
+        nueva.frame.grid(row=fila_actual, column=0, sticky="ew", padx=20, pady=5)
         self.mesas.append(nueva)
 
 if __name__ == "__main__":
