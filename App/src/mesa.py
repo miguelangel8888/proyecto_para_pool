@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import simpledialog
+from tkinter import messagebox
 import pygame
 
 
@@ -18,7 +19,7 @@ class mesa:
         self.extras_mesa1 = []
 
         self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10, bg="#181817")
-        self.frame.config(width=900, height=100)
+        self.frame.config(width=800, height=90)
         #self.frame.grid_propagate(False)
         self.label_mesa1 = tk.Label(
             self.frame,
@@ -33,7 +34,7 @@ class mesa:
         self.boton_inicio = tk.Button(
             self.frame,
             command=self.boton_iniciar,
-            text="Inicio",
+            text="Iniciar",
             font=("Arial", 12, "bold"),
             width=8,
             height=1,
@@ -118,7 +119,7 @@ class mesa:
         if not self.contando:
             self.contando = True
             self.boton_stop.config(text="Detener")
-            self.boton_inicio.config(text="Inicio")
+            self.boton_inicio.config(text="Iniciar")
             self.actualizar_tiempo()
             
 
@@ -130,7 +131,7 @@ class mesa:
             self.boton_inicio.config(text="Seguir")
         else:
             self.boton_stop.config(text="Detener")
-            self.boton_inicio.config(text="Inicio")
+            self.boton_inicio.config(text="Iniciar")
             self.minutos=0
             self.segundos=0
             self.precio=0
@@ -158,5 +159,8 @@ class mesa:
             self.lista_extras.insert(tk.END, extra)
 
     def eliminar_mesa(self):
-        self.frame.destroy()
+        respuesta = messagebox.askyesno("Confirmar", f"¿Estás seguro de eliminar la Mesa {self.numero}?")
+    
+        if respuesta:
+            self.frame.destroy()
         
