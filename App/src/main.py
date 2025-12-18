@@ -10,7 +10,7 @@ class BillarApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("GHOSTPOOL")
-        self.geometry("1000x600")
+        self.geometry("1000x800")
         self.resizable(False, False)
         self.configure(bg="#181817")
         self.minutos=0
@@ -63,8 +63,6 @@ class BillarApp(tk.Tk):
             bg="#181817"
         )
         self.label_mesa1.grid(row=1, column=0, sticky="w")  # izquierda
-
-        
 
         # --- Botón Inicio ---
         self.boton_inicio = tk.Button(

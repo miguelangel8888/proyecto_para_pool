@@ -19,11 +19,11 @@ class mesa:
 
         self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10, bg="#181817")
         self.frame.config(width=950, height=100)
-        self.frame.grid_propagate(False)
+        #self.frame.grid_propagate(False)
         self.label_mesa1 = tk.Label(
             self.frame,
             text=f"Mesa {self.numero}",
-            font=("Arial", 14, "bold"),
+            font=("Arial", 12, "bold"),
             fg="white",
             bg="#181817"
         )
@@ -33,8 +33,8 @@ class mesa:
         self.boton_inicio = tk.Button(
             self.frame,
             command=self.boton_iniciar,
-            text="Inicio1",
-            font=("Arial", 14, "bold"),
+            text="Inicio",
+            font=("Arial", 12, "bold"),
             width=8,
             height=1,
             bg="green",
@@ -48,7 +48,7 @@ class mesa:
             self.frame,
             command=self.boton_pausar,
             text="Tiempo",
-            font=("Arial", 14, "bold"),
+            font=("Arial", 12, "bold"),
             width=8,
             height=1,
             bg="blue",
@@ -60,8 +60,8 @@ class mesa:
         # --- Botón Stop ---
         self.boton_stop = tk.Button(
             self.frame,
-            text="Stop",
-            font=("Arial", 14, "bold"),
+            text="Detener",
+            font=("Arial", 12, "bold"),
             width=8,
             height=1,
             bg="red",
@@ -82,13 +82,15 @@ class mesa:
 
         # Boton agregar extra
 
-        self.boton_agregar_extra = tk.Button(self.frame, text="Agregar",font=("Arial", 14, "bold"), command=self.agregar_extra )
+        self.boton_agregar_extra = tk.Button(self.frame, text="Agregar",font=("Arial", 12, "bold"), command=self.agregar_extra )
         self.boton_agregar_extra.grid(row=0, column=6)
 
-        self.lista_extras = tk.Listbox(self.frame, width=15, height=3, font=("Arial", 14))
+        self.lista_extras = tk.Listbox(self.frame, width=15, height=3, font=("Arial", 12))
         self.lista_extras.grid(row=0,column=7)
 
-
+        self.boton_eliminar_mesa = tk.Button(self.frame, text="Eliminar", bg="red", fg="white",command=self.eliminar_mesa)
+        self.boton_eliminar_mesa.grid(row=0, column=8)
+        
     def actualizar_tiempo(self):
         if self.contando:
             self.segundos+=1
@@ -153,3 +155,7 @@ class mesa:
         if extra:
             self.extras_mesa1.append(extra)
             self.lista_extras.insert(tk.END, extra)
+
+    def eliminar_mesa(self):
+        self.frame.destroy()
+        
