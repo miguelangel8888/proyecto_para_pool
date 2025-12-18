@@ -18,7 +18,7 @@ class mesa:
         self.extras_mesa1 = []
 
         self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10, bg="#181817")
-        self.frame.config(width=950, height=100)
+        self.frame.config(width=900, height=100)
         #self.frame.grid_propagate(False)
         self.label_mesa1 = tk.Label(
             self.frame,
@@ -97,13 +97,14 @@ class mesa:
             horas = self.minutos//60
             minutos = self.segundos//60 
             segundos = self.segundos%60
-            precio = round(minutos*0.217,2)
+            precio = round(minutos*0.234,2)
             if self.tiempo_limite <= minutos and self.tiempo_habilitado==True:
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
                 self.label_precio.config(text=f"{precio} BS.")
                 self.label_tiempo.config(fg="red")
                 if not self.tono:
                     self.tono=True
+                    pygame.mixer.music.set_volume(1.0)
                     pygame.mixer.music.play()
             else:
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
@@ -116,7 +117,7 @@ class mesa:
     def boton_iniciar(self):
         if not self.contando:
             self.contando = True
-            self.boton_stop.config(text="Stop")
+            self.boton_stop.config(text="Detener")
             self.boton_inicio.config(text="Inicio")
             self.actualizar_tiempo()
             
@@ -128,7 +129,7 @@ class mesa:
             self.boton_stop.config(text="Borrar")
             self.boton_inicio.config(text="Seguir")
         else:
-            self.boton_stop.config(text="Stop")
+            self.boton_stop.config(text="Detener")
             self.boton_inicio.config(text="Inicio")
             self.minutos=0
             self.segundos=0
