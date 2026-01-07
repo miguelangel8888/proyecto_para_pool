@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog
 from tkinter import messagebox
-import pygame
+import pygame # type: ignore
 
 
 class mesa:
@@ -18,8 +18,8 @@ class mesa:
         pygame.mixer.music.load("Alarma.mp3")
         self.extras_mesa1 = []
 
-        self.frame = tk.Frame(frame, bd=4, relief="ridge", padx=10, pady=10, bg="#181817")
-        self.frame.config(width=800, height=90)
+        self.frame = tk.Frame(frame, bd=2, relief="ridge", padx=10, pady=5, bg="#181817")
+        self.frame.config(width=900, height=75)
         #self.frame.grid_propagate(False)
         self.label_mesa1 = tk.Label(
             self.frame,
@@ -35,8 +35,8 @@ class mesa:
             self.frame,
             command=self.boton_iniciar,
             text="Iniciar",
-            font=("Arial", 12, "bold"),
-            width=8,
+            font=("Arial", 10, "bold"),
+            width=7,
             height=1,
             bg="green",
             fg="white",
@@ -49,8 +49,8 @@ class mesa:
             self.frame,
             command=self.boton_pausar,
             text="Tiempo",
-            font=("Arial", 12, "bold"),
-            width=8,
+            font=("Arial", 10, "bold"),
+            width=7,
             height=1,
             bg="blue",
             fg="white",
@@ -62,8 +62,8 @@ class mesa:
         self.boton_stop = tk.Button(
             self.frame,
             text="Detener",
-            font=("Arial", 12, "bold"),
-            width=8,
+            font=("Arial", 10, "bold"),
+            width=7,
             height=1,
             bg="red",
             fg="white",
@@ -71,26 +71,35 @@ class mesa:
         )
         self.boton_stop.grid(row=0, column=3, padx=5)  # espacio a la derecha del botón Inicio
         # label tiempo
-        self.label_tiempo = tk.Label(self.frame,text="00:00:00",font=("Arial", 20, "bold"),fg="white",
+        self.label_tiempo = tk.Label(self.frame,text="00:00:00",font=("Arial", 18, "bold"),fg="white",
             bg="#181817")
         
         self.label_tiempo.grid(row=0, column=4)
 
         # label precio
-        self.label_precio = tk.Label(self.frame,text="0.0 BS.",font=("Arial", 20, "bold"),fg="white",
+        self.label_precio = tk.Label(self.frame,text="0.0 BS.",font=("Arial", 18, "bold"),fg="white",
             bg="#181817")
         self.label_precio.grid(row=0, column=5)
 
-        # Boton agregar extra
+        #botones con frame eliminar y agregar
 
-        self.boton_agregar_extra = tk.Button(self.frame, text="Agregar",font=("Arial", 12, "bold"), command=self.agregar_extra )
-        self.boton_agregar_extra.grid(row=0, column=6)
+        frame_botones = tk.Frame(self.frame)  # Frame interno
+        frame_botones.grid(row=0, column=6)   # Una sola celda de la grilla
 
-        self.lista_extras = tk.Listbox(self.frame, width=15, height=3, font=("Arial", 12))
-        self.lista_extras.grid(row=0,column=7)
+        boton_agregar = tk.Button(frame_botones, text=" + ", font=("Arial", 10, "bold"),width=3,
+    height=1, command=self.agregar_extra)
+        boton_agregar.pack()  # Se apilan automáticamente
 
-        self.boton_eliminar_mesa = tk.Button(self.frame, text="Eliminar", bg="red", fg="white",command=self.eliminar_mesa)
-        self.boton_eliminar_mesa.grid(row=0, column=8)
+        boton_eliminar = tk.Button(frame_botones, text=" - ", font=("Arial", 10, "bold"),width=3,
+    height=1, command=self.eliminar_extra)
+        boton_eliminar.pack()
+
+        #####
+        self.lista_extras = tk.Listbox(self.frame, width=12, height=3, font=("Arial", 10))
+        self.lista_extras.grid(row=0,column=7, padx=8)
+
+        self.boton_eliminar_mesa = tk.Button(self.frame, text="X", bg="red", fg="white",command=self.eliminar_mesa)
+        self.boton_eliminar_mesa.grid(row=0, column=8, padx=10)
         
     def actualizar_tiempo(self):
         if self.contando:
@@ -158,6 +167,15 @@ class mesa:
             self.extras_mesa1.append(extra)
             self.lista_extras.insert(tk.END, extra)
 
+    def eliminar_extra(self):
+            seleccion = self.lista_extras.curselection()
+        
+            if seleccion:
+                index = seleccion[0]
+                self.extras_mesa1.pop(index)
+                self.lista_extras.delete(index)
+                
+    
     def eliminar_mesa(self):
         respuesta = messagebox.askyesno("Confirmar", f"¿Estás seguro de eliminar la Mesa {self.numero}?")
     

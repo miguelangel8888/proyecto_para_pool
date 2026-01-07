@@ -49,13 +49,13 @@ class BillarApp(tk.Tk):
 
 
         self.boton_nueva = tk.Button(self.mi_frame, text="Nueva Mesa", command=self.agregar_mesa)
-        self.boton_nueva.grid(row=2, column=0)
+        self.boton_nueva.grid(row=1, column=0, sticky="w", pady=10)
 
     def agregar_mesa(self):
         self.contador_mesas = simpledialog.askstring("Nueva Mesa", "Ingrese el nombre o número de la mesa:")
         nueva = mesa(self.mi_frame, self.contador_mesas)
-        fila_actual = len(self.mesas) + 4
-        nueva.frame.grid(row=fila_actual, column=0, sticky="ew", padx=20, pady=5)
+        fila_actual = len(self.mesas) + 2
+        nueva.frame.grid(row=fila_actual, column=0, sticky="ew", padx=5, pady=5)
         self.mesas.append(nueva)
 
 if __name__ == "__main__":
