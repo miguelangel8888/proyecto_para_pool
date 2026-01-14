@@ -23,7 +23,7 @@ class mesa:
         #self.frame.grid_propagate(False)
         self.label_mesa1 = tk.Label(
             self.frame,
-            text=f"Mesa {self.numero}",
+            text=f"Mesa {self.numero}", width = 20, anchor="w",
             font=("Arial", 12, "bold"),
             fg="white",
             bg="#181817"
@@ -74,10 +74,10 @@ class mesa:
         self.label_tiempo = tk.Label(self.frame,text="00:00:00",font=("Arial", 18, "bold"),fg="white",
             bg="#181817")
         
-        self.label_tiempo.grid(row=0, column=4)
+        self.label_tiempo.grid(row=0, column=4, padx=(18,10))
 
         # label precio
-        self.label_precio = tk.Label(self.frame,text="0.0 BS.",font=("Arial", 18, "bold"),fg="white",
+        self.label_precio = tk.Label(self.frame,text="0.0 BS.", width= 7,font=("Arial", 18, "bold"),fg="white",
             bg="#181817")
         self.label_precio.grid(row=0, column=5)
 
@@ -95,7 +95,7 @@ class mesa:
         boton_eliminar.pack()
 
         #####
-        self.lista_extras = tk.Listbox(self.frame, width=12, height=3, font=("Arial", 10))
+        self.lista_extras = tk.Listbox(self.frame, width=18, height=3, font=("Arial", 10))
         self.lista_extras.grid(row=0,column=7, padx=8)
 
         self.boton_eliminar_mesa = tk.Button(self.frame, text="X", bg="red", fg="white",command=self.eliminar_mesa)
@@ -113,9 +113,11 @@ class mesa:
                 self.label_precio.config(text=f"{precio} BS.")
                 self.label_tiempo.config(fg="red")
                 if not self.tono:
+                    self.tiempo_habilitado==False
                     self.tono=True
                     pygame.mixer.music.set_volume(1.0)
                     pygame.mixer.music.play()
+
             else:
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
                 self.label_precio.config(text=f"{precio} BS.")    
@@ -160,6 +162,8 @@ class mesa:
         if minutos:
             self.tiempo_limite = minutos
             self.tiempo_habilitado=True
+            self.tono=False
+            self.label_tiempo.config(fg="white")
 
     def agregar_extra(self):
         extra = simpledialog.askstring("Agregar Extra", "Descripción y monto (ej: Refresco 15):")
