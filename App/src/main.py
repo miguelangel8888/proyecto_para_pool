@@ -15,15 +15,6 @@ class BillarApp(tk.Tk):
         self.geometry("980x650")
         self.resizable(False, False)
         self.configure(bg="#181817")
-        self.minutos=0
-        self.segundos=0
-        self.contando=False
-        self.tiempo_habilitado=False
-        self.precio=0
-        self.tiempo_limite=0
-        self.tono=False
-        pygame.mixer.init()
-        pygame.mixer.music.load("Alarma.mp3")
         self.extras_mesa1 = []
         self.mesas = []
         self.contador_mesas = 0
