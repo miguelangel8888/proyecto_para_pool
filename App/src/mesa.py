@@ -116,6 +116,8 @@ class Mesa:
                 self.label_tiempo.config(text=f"{horas:02d}:{minutos:02d}:{segundos:02d}")
                 self.label_precio.config(text=f"{precio} BS.")
                 self.label_tiempo.config(fg="red")
+                #self.boton_pausa.config(text="Tiempo", fg="white")
+                #self.boton_pausa.config(bg="blue")
                 if not self.tono:
                     self.tiempo_habilitado==False
                     self.tono=True
@@ -147,6 +149,8 @@ class Mesa:
         else:
             self.boton_stop.config(text="Detener")
             self.boton_inicio.config(text="Iniciar")
+            self.boton_pausa.config(text="Tiempo", fg="white")
+            self.boton_pausa.config(bg="blue")
             self.minutos=0
             self.segundos=0
             self.precio=0
@@ -169,31 +173,46 @@ class Mesa:
             self.tono=False
             self.label_tiempo.config(fg="white")'''
         
+        self.tiempos = {
+            60: "1h",
+            90: "1h30m",
+            120: "2h"
+        }
+
+        self.tiempo_var = tk.IntVar(value=0)
+
         ventana = tk.Toplevel(self.frame)
         ventana.title("Tiempo de Mesa")
         ventana.resizable(False, False)
 
         tk.Radiobutton(
-            ventana, text="1 hora", variable=self.tiempo_var, value=1
+            ventana, text="1 hora", variable=self.tiempo_var, value=60
         ).pack(anchor="w")
 
         tk.Radiobutton(
-        ventana, text="1 hora y media", variable=self.tiempo_var, value=2
+        ventana, text="1 hora y media", variable=self.tiempo_var, value=90
         ).pack(anchor="w")
 
         tk.Radiobutton(
-        ventana, text="2 horas", variable=self.tiempo_var, value=3
+        ventana, text="2 horas", variable=self.tiempo_var, value=120
         ).pack(anchor="w")
+
+        def aceptar_tiempo():
+            valor = self.tiempo_var.get()
+            if valor in self.tiempos:
+                texto = self.tiempos[valor]
+                self.boton_pausa.config(text=texto, fg="black")
+                self.boton_pausa.config(bg="yellow")
+            ventana.destroy()
+
 
         tk.Button(
-        ventana, text="Aceptar", command=ventana.destroy
+        ventana, text="Aceptar", command=aceptar_tiempo
         ).pack(pady=10)
 
         
         ventana.wait_window()
         minutos=self.tiempo_var.get()
-        
-        
         
         if minutos > 0:
             print(minutos)

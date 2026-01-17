@@ -1,6 +1,8 @@
 # Entorno virtual
 .venv/
-
+build/
+dist/
+main.spec
 # Archivos de Python compilados
 __pycache__/
 *.pyc

@@ -5,6 +5,7 @@ import pygame # type: ignore
 from PIL import Image, ImageTk # type: ignore
 from mesa import Mesa
 from tkinter import PhotoImage
+from tkinter import messagebox
 from recursos import recurso
 
 
@@ -103,6 +104,16 @@ class BillarApp(tk.Tk):
         
     def agregar_mesa(self):
         self.contador_mesas = simpledialog.askstring("Nueva Mesa", "Ingrese el nombre o número de la mesa:")
+        if self.contador_mesas == None:
+            return
+
+        if not self.contador_mesas.strip():
+            messagebox.showwarning(
+            "Nombre inválido",
+            "Debe ingresar un nombre para la mesa"
+            )
+            return
+
         nueva = Mesa(self.frame_mesas, self.contador_mesas)
         fila_actual = len(self.mesas) + 2
         nueva.frame.grid(row=fila_actual, column=0, sticky="ew", padx=3, pady=3)
