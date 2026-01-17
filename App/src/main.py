@@ -3,9 +3,10 @@ import tkinter as tk
 from tkinter import simpledialog
 import pygame # type: ignore
 from PIL import Image, ImageTk # type: ignore
-from mesa import mesa
+from mesa import Mesa
 from tkinter import PhotoImage
-#from src.utils.cronometro import actualizar_tiempo
+from recursos import recurso
+
 
 class BillarApp(tk.Tk):
     def __init__(self):
@@ -81,7 +82,7 @@ class BillarApp(tk.Tk):
         self.canvas_mesas.bind("<Leave>", desactivar_scroll)
 
         #fondo de canvas
-        self.imagen_original = Image.open("GhostPoolOficial.png")
+        self.imagen_original = Image.open(recurso("GhostPoolOficial.png"))
         self.imagen_original = self.imagen_original.resize((980, 650))
         self.imagen_fondo = ImageTk.PhotoImage(self.imagen_original)
 
@@ -111,7 +112,7 @@ class BillarApp(tk.Tk):
         
     def agregar_mesa(self):
         self.contador_mesas = simpledialog.askstring("Nueva Mesa", "Ingrese el nombre o número de la mesa:")
-        nueva = mesa(self.frame_mesas, self.contador_mesas)
+        nueva = Mesa(self.frame_mesas, self.contador_mesas)
         fila_actual = len(self.mesas) + 2
         nueva.frame.grid(row=fila_actual, column=0, sticky="ew", padx=3, pady=3)
         self.mesas.append(nueva)

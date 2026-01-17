@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import simpledialog
 from tkinter import messagebox
 import pygame # type: ignore
+from recursos import recurso
 
 
-class mesa:
+class Mesa:
     def __init__(self, frame, numero):
         self.numero=numero
         self.minutos=0
@@ -15,8 +16,11 @@ class mesa:
         self.tiempo_limite=0
         self.tono=False
         pygame.mixer.init()
-        pygame.mixer.music.load("Alarma.mp3")
+        pygame.mixer.music.load(recurso("Alarma.mp3"))
         self.extras_mesa1 = []
+        self.tiempo_var = tk.IntVar()
+        #self.tiempo_var.set(1)
+        
 
         self.frame = tk.Frame(frame, bd=2, relief="ridge", padx=10, pady=5, bg="#181817")
         self.frame.config(width=900, height=75)
@@ -158,12 +162,47 @@ class mesa:
         
     def boton_pausar(self):
         
-        minutos = simpledialog.askinteger("Tiempo límite", "Ingrese el tiempo en minutos:", minvalue=1)
+        '''minutos = simpledialog.askinteger("Tiempo límite", "Ingrese el tiempo en minutos:", minvalue=1)
         if minutos:
             self.tiempo_limite = minutos
             self.tiempo_habilitado=True
             self.tono=False
+            self.label_tiempo.config(fg="white")'''
+        
+        ventana = tk.Toplevel(self.frame)
+        ventana.title("Tiempo de Mesa")
+        ventana.resizable(False, False)
+
+        tk.Radiobutton(
+            ventana, text="1 hora", variable=self.tiempo_var, value=1
+        ).pack(anchor="w")
+
+        tk.Radiobutton(
+        ventana, text="1 hora y media", variable=self.tiempo_var, value=2
+        ).pack(anchor="w")
+
+        tk.Radiobutton(
+        ventana, text="2 horas", variable=self.tiempo_var, value=3
+        ).pack(anchor="w")
+
+        tk.Button(
+        ventana, text="Aceptar", command=ventana.destroy
+        ).pack(pady=10)
+
+        
+        ventana.wait_window()
+        minutos=self.tiempo_var.get()
+        
+        
+        
+        if minutos > 0:
+            print(minutos)
+            self.tiempo_limite = minutos
+            self.tiempo_habilitado=True
+            self.tono=False
             self.label_tiempo.config(fg="white")
+            self.tiempo_var.set(0)
+        
 
     def agregar_extra(self):
         extra = simpledialog.askstring("Agregar Extra", "Descripción y monto (ej: Refresco 15):")
@@ -178,6 +217,11 @@ class mesa:
                 index = seleccion[0]
                 self.extras_mesa1.pop(index)
                 self.lista_extras.delete(index)
+            else:
+                if self.extras_mesa1:
+                    index = len(self.extras_mesa1) - 1
+                    self.extras_mesa1.pop(index)
+                    self.lista_extras.delete(index)
                 
     
     def eliminar_mesa(self):
